@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+o <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -12,7 +12,8 @@
 			padding: 0;
 			box-sizing: border-box;
 		}
-<to do:Fix doom straight loading pure html code from cdn
+	
+		/* TODO: Fix doom straight loading pure html code from cdn */
 	
 		body {
 			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -378,6 +379,30 @@
 				date: '2025',
 				url: 'https://cdn.jsdelivr.net/gh/7zeb/doomjs@main/index.html',
 				type: 'newWindow',
+				launchFunction: null,
+				countdownSeconds: 3
+			},
+			{
+				id: 'hollow-knight-game',
+				title: 'Hollow Knight (Game)',
+				description: 'Web-based implementation of Hollow Knight - Direct game access for debugging',
+				icon: '🗡️',
+				version: '1.0',
+				date: '2022',
+				url: 'https://cdn.jsdelivr.net/gh/Cat-haha/hollow-knight@master/game.html',
+				type: 'iframe',
+				launchFunction: null,
+				countdownSeconds: 3
+			},
+			{
+				id: 'hollow-knight-landing',
+				title: 'Hollow Knight (Landing)',
+				description: 'Web-based implementation of Hollow Knight - Landing page for debugging',
+				icon: '🛡️',
+				version: '1.0',
+				date: '2022',
+				url: 'https://cdn.jsdelivr.net/gh/Cat-haha/hollow-knight@master/index.html',
+				type: 'iframe',
 				launchFunction: null,
 				countdownSeconds: 3
 			},
