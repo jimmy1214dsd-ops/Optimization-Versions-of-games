@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="description" content="Multi-Game Launcher - Launch your favorite games">
+	<title>Game Launcher</title>
+	
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 100vh;
+			overflow-x: hidden;
+			/* Performance optimizations */
+			will-change: background;
+			transform: translateZ(0); /* Force GPU acceleration */
+		}
+
+		#game_selection_screen {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			min-height: 100vh;
+			padding: 20px;
+			contain: layout style paint; /* CSS containment for performance */
+		}
+
+		.launcher-header {
+			text-align: center;
+			color: white;
+			margin-bottom: 40px;
+			will-change: transform;
+		}
+
+		.launcher-header h1 {
+			font-size: 3rem;
+			margin-bottom: 10px;
+			text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+		}
+
+		.launcher-header p {
+			font-size: 1.2rem;
+			opacity: 0.9;
+		}
+
+		.games-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 25px;
+			max-width: 1200px;
+			width: 100%;
+			margin-bottom: 30px;
+			contain: layout; /* Optimize grid rendering */
+		}
+
+		.game-card {
+			background: rgba(255, 255, 255, 0.95);
+			border-radius: 15px;
+			padding: 25px;
+			cursor: pointer;
+			transition: transform 0.2s ease, box-shadow 0.2s ease; /* Optimized transitions */
+			box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+			position: relative;
+			overflow: hidden;
+			will-change: transform; /* GPU acceleration hint */
+			transform: translateZ(0); /* Force hardware acceleration */
+			contain: layout style paint; /* CSS containment */
+		}
+
+		.game-card:hover {
+			transform: translateY(-5px) translateZ(0);
+			box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+		}
+
+		.game-card::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 4px;
+			background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+			will-change: transform;
+		}
+
+		.game-card.active {
+			border: 3px solid #667eea;
+		}
+
+		.game-icon {
+			font-size: 3rem;
+			margin-bottom: 15px;
+		}
+
+		.game-title {
+			font-size: 1.5rem;
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 10px;
+		}
+
+		.game-description {
+			color: #666;
+			font-size: 0.9rem;
+			margin-bottom: 15px;
+			line-height: 1.5;
+		}
+
+		.game-meta {
+			display: flex;
+			justify-content: space-between;
+			font-size: 0.85rem;
+			color: #999;
+			margin-top: 15px;
+			padding-top: 15px;
+			border-top: 1px solid #eee;
+		}
+
+		.game-version {
+			font-weight: bold;
+			color: #667eea;
+		}
+
+		.launch-button {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			border: none;
+			padding: 15px 40px;
+			font-size: 1.1rem;
+			border-radius: 8px;
+			cursor: pointer;
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+			font-weight: bold;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+			margin-top: 20px;
+			will-change: transform;
+			transform: translateZ(0);
+		}
+
+		.launch-button:hover:not(:disabled) {
+			transform: translateY(-2px) translateZ(0);
+			box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+		}
+
+		.launch-button:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
+		#launch_countdown_screen {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			z-index: 10000;
+			align-items: center;
+			justify-content: center;
+			font-family: sans-serif;
+			user-select: none;
+			will-change: opacity;
+		}
+
+		.countdown-container {
+			text-align: center;
+			background: rgba(255,255,255,0.95);
+			padding: 40px;
+			border-radius: 15px;
+			box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+			max-width: 500px;
+			width: 90%;
+			transform: translateZ(0);
+		}
+
+		.countdown-container h1 {
+			margin-top: 0;
+			color: #333;
+			margin-bottom: 10px;
+		}
+
+		.countdown-container h2 {
+			color: #333;
+			margin-bottom: 20px;
+		}
+
+		.countdown-progress {
+			border: 2px solid #333;
+			width: 100%;
+			height: 20px;
+			padding: 2px;
+			margin-bottom: 20px;
+			border-radius: 10px;
+			background: #f0f0f0;
+		}
+
+		.countdown-progress-bar {
+			background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+			width: 0%;
+			height: 100%;
+			border-radius: 8px;
+			transition: width 0.05s linear; /* Faster, linear transition */
+			will-change: width;
+			transform: translateZ(0);
+		}
+
+		.skip-button {
+			padding: 12px 30px;
+			font-size: 16px;
+			background: #667eea;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background 0.2s ease;
+			font-weight: bold;
+			margin-top: 20px;
+		}
+
+		.skip-button:hover {
+			background: #5568d3;
+		}
+
+		.error-message {
+			display: none;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: rgba(255, 0, 0, 0.9);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			z-index: 10001;
+			text-align: center;
+			max-width: 400px;
+		}
+
+		.error-message button {
+			margin-top: 10px;
+			padding: 10px 20px;
+			cursor: pointer;
+			background: white;
+			color: #ff0000;
+			border: none;
+			border-radius: 5px;
+			font-weight: bold;
+		}
+
+		.loading-spinner {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			border: 3px solid rgba(255,255,255,.3);
+			border-radius: 50%;
+			border-top-color: white;
+			animation: spin 1s ease-in-out infinite;
+			margin-right: 10px;
+		}
+
+		@keyframes spin {
+			to { transform: rotate(360deg); }
+		}
+
+		@media (max-width: 768px) {
+			.launcher-header h1 {
+				font-size: 2rem;
+			}
+
+			.games-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- Game Selection Screen -->
+	<div id="game_selection_screen">
+		<div class="launcher-header">
+			<h1>🎮 Game Launcher</h1>
+			<p>Select a game to play</p>
+		</div>
+
+		<div class="games-grid" id="gamesGrid">
+			<!-- Games will be dynamically loaded here -->
+		</div>
+
+		<button class="launch-button" id="launchButton" disabled>
+			Launch Game
+		</button>
+	</div>
+
+	<!-- Launch Countdown Screen -->
+	<div id="launch_countdown_screen" role="status" aria-live="polite" aria-label="Game loading countdown">
+		<div class="countdown-container">
+			<h1 id="countdownGameTitle">Loading...</h1>
+			<p style="color:#666;font-size:14px;margin-bottom:20px;">
+				Version: <span id="countdownGameVersion" style="color:#AA0000;font-weight:bold;">-</span>
+			</p>
+			<h2>
+				Game will launch in <span id="launchCountdownNumber" aria-live="assertive">5</span>...
+			</h2>
+			<div class="countdown-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Loading progress">
+				<div id="launchCountdownProgress" class="countdown-progress-bar"></div>
+			</div>
+			<button id="skipCountdown" class="skip-button" autofocus aria-label="Skip countdown and launch game immediately">
+				Skip Countdown
+			</button>
+		</div>
+	</div>
+
+	<!-- Error Message -->
+	<div id="errorMessage" class="error-message">
+		<p id="errorText"></p>
+		<button onclick="location.reload()">Retry</button>
+	</div>
+
+	<script type="text/javascript">
+	(function() {
+		'use strict';
+
+		// ==================== Performance Monitoring ====================
+		const perf = {
+			startTime: performance.now(),
+			marks: {},
+			measures: {},
+			mark: function(name) {
+				this.marks[name] = performance.now();
+				performance.mark(name);
+			},
+			measure: function(name, start, end) {
+				this.measures[name] = performance.now() - (this.marks[start] || this.startTime);
+				performance.measure(name, start, end);
+			},
+			log: function() {
+				if (console.group) {
+					console.group('Performance Metrics');
+					Object.keys(this.measures).forEach(key => {
+						console.log(`${key}: ${this.measures[key].toFixed(2)}ms`);
+					});
+					console.groupEnd();
+				}
+			}
+		};
+
+		perf.mark('init-start');
+
+		// ==================== Game Configuration ====================
+		const GAMES = [
+			{
+				id: 'eaglercraft-1.12',
+				title: 'Eaglercraft 1.12',
+				description: 'Minecraft 1.12.2 running in your browser with WASM-GC optimization',
+				icon: '⛏️',
+				version: '1.12.2',
+				date: '03/30/2025',
+				url: 'https://cdn.jsdelivr.net/gh/jimmy1214dsd-ops/Optimization-Versions-of-games@main/Eaglercraft_1.12.2_WASM_Offline_Download.html',
+				type: 'iframe',
+				launchFunction: 'main',
+				countdownSeconds: 5
+			},
+			{
+				id: 'doom-dwasm',
+				title: 'DOOM (Dwasm)',
+				description: 'Classic DOOM engine ported to browser with PrBoom+ and PrBoomX enhancements. Play the legendary FPS in your browser!',
+				icon: '🔫',
+				version: 'Latest',
+				date: '2025',
+				url: 'https://dwasm.m-h.org.uk/',
+				type: 'newWindow',
+				launchFunction: null,
+				countdownSeconds: 3
+			},
+		];
+
+		// ==================== Configuration ====================
+		const CONFIG = {
+			COUNTDOWN_STEPS: 100,
+			ANIMATION_INTERVAL: 16, // ~60fps with requestAnimationFrame
+			FADE_OUT_DURATION: 300,
+			CACHE_DURATION: 7 * 24 * 60 * 60 * 1000, // 7 days
+			DB_NAME: 'GameLauncherCache',
+			STORE_NAME: 'GameFiles'
+		};
+
+		// ==================== IndexedDB Cache ====================
+		const cache = {
+			db: null,
+			init: async function() {
+				return new Promise((resolve, reject) => {
+					const request = indexedDB.open(CONFIG.DB_NAME, 1);
+					request.onupgradeneeded = (e) => {
+						const db = e.target.result;
+						if (!db.objectStoreNames.contains(CONFIG.STORE_NAME)) {
+							db.createObjectStore(CONFIG.STORE_NAME, { keyPath: 'url' });
+						}
+					};
+					request.onsuccess = (e) => {
+						this.db = e.target.result;
+						resolve(this.db);
+					};
+					request.onerror = () => reject(request.error);
+				});
+			},
+			get: async function(url) {
+				if (!this.db) await this.init();
+				return new Promise((resolve) => {
+					const tx = this.db.transaction(CONFIG.STORE_NAME, 'readonly');
+					const store = tx.objectStore(CONFIG.STORE_NAME);
+					const request = store.get(url);
+					request.onsuccess = () => {
+						const data = request.result;
+						if (data && (Date.now() - data.timestamp) < CONFIG.CACHE_DURATION) {
+							resolve(data.content);
+						} else {
+							resolve(null);
+						}
+					};
+					request.onerror = () => resolve(null);
+				});
+			},
+			set: async function(url, content) {
+				if (!this.db) await this.init();
+				return new Promise((resolve, reject) => {
+					const tx = this.db.transaction(CONFIG.STORE_NAME, 'readwrite');
+					const store = tx.objectStore(CONFIG.STORE_NAME);
+					const request = store.put({ url, content, timestamp: Date.now() });
+					request.onsuccess = () => resolve();
+					request.onerror = () => reject(request.error);
+				});
+			}
+		};
+
+		// ==================== State Management ====================
+		const state = {
+			selectedGame: null,
+			animationFrameId: null,
+			counter: 0,
+			skipRequested: false,
+			currentGameConfig: null,
+			lastFrameTime: 0
+		};
+
+		// ==================== Utility Functions ====================
+		function log(message, type = 'info') {
+			if (type === 'error') console.error('[GameLauncher]', message);
+			else if (type === 'warn') console.warn('[GameLauncher]', message);
+			else console.log('[GameLauncher]', message);
+		}
+
+		function getElement(id) {
+			return document.getElementById(id);
+		}
+
+		function showError(message) {
+			const errorDiv = getElement('errorMessage');
+			const errorText = getElement('errorText');
+			if (errorDiv && errorText) {
+				errorText.textContent = message;
+				errorDiv.style.display = 'block';
+			}
+		}
+
+		function hideError() {
+			const errorDiv = getElement('errorMessage');
+			if (errorDiv) errorDiv.style.display = 'none';
+		}
+
+		// ==================== Throttle/Debounce ====================
+		function throttle(func, limit) {
+			let inThrottle;
+			return function() {
+				const args = arguments;
+				const context = this;
+				if (!inThrottle) {
+					func.apply(context, args);
+					inThrottle = true;
+					setTimeout(() => inThrottle = false, limit);
+				}
+			};
+		}
+
+		// ==================== Game Selection UI ====================
+		function renderGames() {
+			perf.mark('render-start');
+			const gamesGrid = getElement('gamesGrid');
+			if (!gamesGrid) return;
+
+			// Use DocumentFragment for better performance
+			const fragment = document.createDocumentFragment();
+			
+			GAMES.forEach(game => {
+				const card = document.createElement('div');
+				card.className = 'game-card';
+				card.dataset.gameId = game.id;
+				card.innerHTML = `
+					<div class="game-icon">${game.icon}</div>
+					<div class="game-title">${game.title}</div>
+					<div class="game-description">${game.description}</div>
+					<div class="game-meta">
+						<span class="game-version">v${game.version}</span>
+						<span>${game.date}</span>
+					</div>
+				`;
+
+				// Add click handler
+				card.addEventListener('click', () => selectGame(game.id));
+				fragment.appendChild(card);
+			});
+
+			gamesGrid.appendChild(fragment);
+			perf.mark('render-end');
+			perf.measure('render-time', 'render-start', 'render-end');
+			log(`Rendered ${GAMES.length} games`);
+		}
+
+		function selectGame(gameId) {
+			// Update state immediately
+			state.selectedGame = gameId;
+			
+			// Batch DOM updates
+			requestAnimationFrame(() => {
+				document.querySelectorAll('.game-card').forEach(card => {
+					card.classList.toggle('active', card.dataset.gameId === gameId);
+				});
+
+				const launchButton = getElement('launchButton');
+				if (launchButton) launchButton.disabled = false;
+			});
+			
+			log(`Selected game: ${gameId}`);
+		}
+
+		// ==================== Optimized Countdown (requestAnimationFrame) ====================
+		function calculateRemainingSeconds() {
+			if (!state.currentGameConfig) return 0;
+			const progress = state.counter / CONFIG.COUNTDOWN_STEPS;
+			return Math.max(0, Math.ceil(state.currentGameConfig.countdownSeconds * (1 - progress)));
+		}
+
+		function updateCountdownDisplay() {
+			const countdownNumber = getElement('launchCountdownNumber');
+			const countdownProgress = getElement('launchCountdownProgress');
+			if (!countdownNumber || !countdownProgress) return;
+
+			const remainingSeconds = calculateRemainingSeconds();
+			const progressPercent = Math.min(100, (state.counter / CONFIG.COUNTDOWN_STEPS) * 100);
+
+			// Batch DOM updates
+			requestAnimationFrame(() => {
+				countdownNumber.textContent = remainingSeconds.toString();
+				countdownProgress.style.width = progressPercent + '%';
+				if (countdownProgress.parentElement) {
+					countdownProgress.parentElement.setAttribute('aria-valuenow', Math.round(progressPercent));
+				}
+				if (remainingSeconds <= 1) {
+					countdownNumber.style.color = '#AA0000';
+					countdownNumber.style.fontWeight = 'bold';
+				}
+			});
+		}
+
+		function countdownAnimation(currentTime) {
+			if (!state.lastFrameTime) state.lastFrameTime = currentTime;
+			const deltaTime = currentTime - state.lastFrameTime;
+			
+			// Update counter based on frame time for smooth 60fps
+			if (deltaTime >= CONFIG.ANIMATION_INTERVAL) {
+				state.counter += (deltaTime / (state.currentGameConfig.countdownSeconds * 1000 / CONFIG.COUNTDOWN_STEPS));
+				state.lastFrameTime = currentTime;
+				
+				updateCountdownDisplay();
+
+				if (state.counter >= CONFIG.COUNTDOWN_STEPS || state.skipRequested) {
+					stopCountdown();
+					launchGame();
+				} else {
+					state.animationFrameId = requestAnimationFrame(countdownAnimation);
+				}
+			} else {
+				state.animationFrameId = requestAnimationFrame(countdownAnimation);
+			}
+		}
+
+		function startCountdown(gameConfig) {
+			perf.mark('countdown-start');
+			state.currentGameConfig = gameConfig;
+			state.counter = 0;
+			state.skipRequested = false;
+			state.lastFrameTime = 0;
+
+			const countdownTitle = getElement('countdownGameTitle');
+			const countdownVersion = getElement('countdownGameVersion');
+			if (countdownTitle) countdownTitle.textContent = gameConfig.title;
+			if (countdownVersion) countdownVersion.textContent = gameConfig.version;
+
+			const countdownScreen = getElement('launch_countdown_screen');
+			if (countdownScreen) countdownScreen.style.display = 'flex';
+
+			const skipButton = getElement('skipCountdown');
+			if (skipButton) {
+				skipButton.disabled = false;
+				skipButton.textContent = 'Skip Countdown';
+				skipButton.onclick = function() {
+					log('Skip countdown requested');
+					state.skipRequested = true;
+					this.disabled = true;
+					this.textContent = 'Launching...';
+				};
+			}
+
+			// Use requestAnimationFrame for smooth 60fps animation
+			state.animationFrameId = requestAnimationFrame(countdownAnimation);
+			log(`Countdown started: ${gameConfig.countdownSeconds} seconds`);
+		}
+
+		function stopCountdown() {
+			if (state.animationFrameId) {
+				cancelAnimationFrame(state.animationFrameId);
+				state.animationFrameId = null;
+			}
+		}
+
+		// ==================== Optimized Game Launch ====================
+		async function loadGameFromURL(url) {
+			perf.mark('load-start');
+			
+			// Check cache first
+			const cached = await cache.get(url);
+			if (cached) {
+				log('Game loaded from cache');
+				perf.mark('load-end');
+				perf.measure('load-time', 'load-start', 'load-end');
+				return cached;
+			}
+
+			try {
+				log(`Loading game from: ${url}`);
+				const response = await fetch(url, {
+					cache: 'force-cache', // Use browser cache
+					headers: {
+						'Accept': 'text/html,application/xhtml+xml'
+					}
+				});
+				
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				
+				const content = await response.text();
+				
+				// Cache for future use (async, don't wait)
+				cache.set(url, content).catch(err => log('Cache save failed: ' + err, 'warn'));
+				
+				perf.mark('load-end');
+				perf.measure('load-time', 'load-start', 'load-end');
+				return content;
+			} catch (error) {
+				log(`Failed to load game: ${error.message}`, 'error');
+				throw error;
+			}
+		}
+
+		function launchGameInIframe(gameContent, gameConfig) {
+			perf.mark('launch-start');
+			
+			requestAnimationFrame(() => {
+				const countdownScreen = getElement('launch_countdown_screen');
+				if (countdownScreen) {
+					countdownScreen.style.transition = `opacity ${CONFIG.FADE_OUT_DURATION}ms ease-out`;
+					countdownScreen.style.opacity = '0';
+					setTimeout(() => {
+						countdownScreen.style.display = 'none';
+					}, CONFIG.FADE_OUT_DURATION);
+				}
+
+				const selectionScreen = getElement('game_selection_screen');
+				if (selectionScreen) selectionScreen.style.display = 'none';
+
+				// Create iframe with optimized settings
+				const iframe = document.createElement('iframe');
+				iframe.style.cssText = 'width:100%;height:100%;border:none;position:fixed;top:0;left:0;z-index:9999;';
+				iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-pointer-lock';
+				iframe.loading = 'eager'; // Chrome optimization
+				
+				document.body.appendChild(iframe);
+				document.body.style.backgroundColor = 'black';
+				document.body.style.margin = '0';
+				document.body.style.overflow = 'hidden';
+
+				// Write content in next frame for better performance
+				requestAnimationFrame(() => {
+					iframe.contentDocument.open();
+					iframe.contentDocument.write(gameContent);
+					iframe.contentDocument.close();
+					perf.mark('launch-end');
+					perf.measure('launch-time', 'launch-start', 'launch-end');
+					log('Game launched in iframe');
+				});
+
+				// Call launch function after a delay
+				setTimeout(() => {
+					try {
+						if (gameConfig.launchFunction && iframe.contentWindow) {
+							if (typeof iframe.contentWindow[gameConfig.launchFunction] === 'function') {
+								iframe.contentWindow[gameConfig.launchFunction]();
+							}
+						}
+					} catch (error) {
+						log(`Could not call launch function: ${error.message}`, 'warn');
+					}
+				}, 1000);
+			});
+		}
+
+		function launchGameRedirect(gameConfig) {
+			window.location.href = gameConfig.url;
+		}
+
+		function launchGameInNewWindow(gameConfig) {
+			const newWindow = window.open(gameConfig.url, '_blank', 'noopener,noreferrer');
+			if (!newWindow) {
+				log('Popup blocked, falling back to redirect', 'warn');
+				window.location.href = gameConfig.url;
+			} else {
+				log('Game opened in new window');
+				setTimeout(() => {
+					const selectionScreen = getElement('game_selection_screen');
+					if (selectionScreen) selectionScreen.style.display = 'flex';
+					const countdownScreen = getElement('launch_countdown_screen');
+					if (countdownScreen) countdownScreen.style.display = 'none';
+				}, 500);
+			}
+		}
+
+		async function launchGame() {
+			if (!state.selectedGame) {
+				showError('No game selected');
+				return;
+			}
+
+			const gameConfig = GAMES.find(g => g.id === state.selectedGame);
+			if (!gameConfig) {
+				showError('Game configuration not found');
+				return;
+			}
+
+			log(`Launching game: ${gameConfig.title}`);
+
+			try {
+				hideError();
+
+				if (gameConfig.type === 'redirect') {
+					launchGameRedirect(gameConfig);
+					return;
+				}
+
+				if (gameConfig.type === 'newWindow') {
+					launchGameInNewWindow(gameConfig);
+					return;
+				}
+
+				// Load game content with caching
+				const gameContent = await loadGameFromURL(gameConfig.url);
+				launchGameInIframe(gameContent, gameConfig);
+
+			} catch (error) {
+				log(`Failed to launch game: ${error.message}`, 'error');
+				showError(`Failed to launch game: ${error.message}. Please check your connection and try again.`);
+				
+				requestAnimationFrame(() => {
+					const countdownScreen = getElement('launch_countdown_screen');
+					if (countdownScreen) countdownScreen.style.display = 'none';
+					const selectionScreen = getElement('game_selection_screen');
+					if (selectionScreen) selectionScreen.style.display = 'flex';
+				});
+			}
+		}
+
+		// ==================== Initialization ====================
+		function init() {
+			perf.mark('init-end');
+			perf.measure('init-time', 'init-start', 'init-end');
+			
+			log('Initializing Game Launcher...');
+
+			// Initialize cache
+			cache.init().catch(err => log('Cache init failed: ' + err, 'warn'));
+
+			// Render games
+			renderGames();
+
+			// Set up launch button
+			const launchButton = getElement('launchButton');
+			if (launchButton) {
+				launchButton.addEventListener('click', function() {
+					if (state.selectedGame) {
+						const gameConfig = GAMES.find(g => g.id === state.selectedGame);
+						if (gameConfig) {
+							startCountdown(gameConfig);
+						}
+					}
+				});
+			}
+
+			// Keyboard shortcuts (throttled)
+			document.addEventListener('keydown', throttle((e) => {
+				if (e.key === 'Enter' && state.selectedGame && !launchButton.disabled) {
+					const gameConfig = GAMES.find(g => g.id === state.selectedGame);
+					if (gameConfig) startCountdown(gameConfig);
+				}
+			}, 300));
+
+			// Log performance metrics after a delay
+			setTimeout(() => perf.log(), 1000);
+
+			log('Game Launcher initialized');
+		}
+
+		// Start initialization when DOM is ready
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', init);
+		} else {
+			init();
+		}
+
+		// Cleanup
+		window.addEventListener('beforeunload', () => {
+			stopCountdown();
+		});
+
+		// Export API
+		window.GameLauncher = {
+			addGame: function(gameConfig) {
+				GAMES.push(gameConfig);
+				renderGames();
+				log(`Added new game: ${gameConfig.id}`);
+			},
+			getGames: function() {
+				return GAMES;
+			},
+			launchGameById: function(gameId) {
+				selectGame(gameId);
+				const gameConfig = GAMES.find(g => g.id === gameId);
+				if (gameConfig) startCountdown(gameConfig);
+			},
+			clearCache: async function() {
+				if (cache.db) {
+					const tx = cache.db.transaction(CONFIG.STORE_NAME, 'readwrite');
+					await tx.objectStore(CONFIG.STORE_NAME).clear();
+					log('Cache cleared');
+				}
+			}
+		};
+	})();
+	</script>
+</body>
+</html>
