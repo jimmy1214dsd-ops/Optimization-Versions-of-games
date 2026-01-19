@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEMON</title>
+  <meta name="description" content="Welcome to DEMON">
+  <meta name="keywords" content="DEMON, demon, Demon, demonzero, DEMONzero, demon zero, DEMON zero, demon search, demon browser, demon uv, demon online, demon portal, demon hub, demon network, demon interface">
+  <meta name="author" content="Demon">
+  <meta name="publisher" content="Demon">
+  <meta name="language" content="en">
+  <meta http-equiv="Content-Language" content="en">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#8B0000">
+  <meta name="msapplication-TileColor" content="#8B0000">
+  <meta name="msapplication-TileImage" content="/image/logo.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DEMON">
+  <meta property="og:description" content="Welcome to DEMON">
+  <meta property="og:url" content="https://demonzero.space">
+  <meta property="og:site_name" content="DEMON">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="/image/logo.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DEMON">
+  <meta name="twitter:description" content="Welcome to DEMON">
+  <meta name="twitter:image" content="/image/logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="view_data/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="view_data/logo.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="view_data/logo.png">
+  <link rel="manifest" href="https://demonzero.space/site.webmanifest">
+  <link href="css2.css" rel="stylesheet">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta name="color-scheme" content="dark light">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+  <meta name="viewport-fit" content="cover">
+  <meta name="theme" content="dark">
+  <meta name="generator" content="DEMON Engine">
+  <meta name="rating" content="general">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="apple-mobile-web-app-title" content="DEMON">
+  <script async="" src="js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1L129B4T5F');
+  </script>
+  <script async="" src="googlesyndication_adsbygoogle.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --sidebar-w: 260px;
+      --sidebar-collapsed-w: 80px;
+      --accent: #ff3b2f;
+      --muted: rgba(255,255,255,0.87);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Orbitron", sans-serif;
+      background: #060404;
+      color: var(--muted);
+      overflow: hidden;
+    }
+    aside.sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar-collapsed-w);
+      background: linear-gradient(180deg, rgba(47,18,11,0.98), rgba(17,7,6,0.98));
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: width .22s ease;
+      box-shadow: 12px 0 40px rgba(0,0,0,0.7), inset 0 0 30px rgba(0,0,0,0.45);
+      z-index: 50;
+    }
+    aside.sidebar:hover { width: var(--sidebar-w); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 6px 0;
+    }
+    .brand img.logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(255,59,47,0.15);
+      border: 1px solid rgba(255,59,47,0.08);
+      background: rgba(0,0,0,0.12);
+    }
+    .brand .title {
+      color: var(--accent);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    aside.sidebar:not(:hover) .title { display: none; }
+
+    div.menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px 0;
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+
+    div.menu::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+    div.menu::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+
+    .btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      height: 56px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.02);
+      cursor: pointer;
+      color: var(--muted);
+      font-weight: 600;
+      transition: all .2s ease;
+    }
+
+    .btn img.icon {
+      width: 26px;
+      height: 26px;
+      display: block;
+      filter: invert(90%) brightness(1.2);
+    }
+
+    .btn img.icon.no-filter {
+      filter: none !important;
+    }
+
+    aside.sidebar:not(:hover) .btn { justify-content: center; }
+    aside.sidebar:hover .btn { padding: 16px 20px; gap: 18px; }
+    .btn:hover { transform: translateY(-2px); background: rgba(255,59,47,0.1); }
+    aside.sidebar:not(:hover) .label { display: none; }
+    .btn.active { background: rgba(255,59,47,0.1); color: #fff; }
+
+    hr {
+      opacity: .06;
+      border: none;
+      height: 1px;
+      background: rgba(255,255,255,0.02);
+      margin: 8px 2px;
+    }
+
+
+    iframe#contentFrame {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: var(--sidebar-collapsed-w);
+      width: calc(100% - var(--sidebar-collapsed-w));
+      height: 100vh;
+      border: 0;
+      transition: left .22s ease, width .22s ease;
+      z-index: 10;
+      background: #060404;
+    }
+    aside.sidebar:hover ~ iframe#contentFrame {
+      left: var(--sidebar-w);
+      width: calc(100% - var(--sidebar-w));
+    }
+
+    @media(max-width:760px){
+      aside.sidebar { width: var(--sidebar-collapsed-w); }
+      iframe#contentFrame { left: var(--sidebar-collapsed-w); width: calc(100% - var(--sidebar-collapsed-w)); }
+    }
+
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0f0f0f;
+      color: #ff4444;
+      margin: 0;
+    }
+
+    .demon-counter-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      text-align: center;
+      color: #ff4444;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #ff0000;
+      border-radius: 10px;
+      padding: 10px 12px 8px 12px;
+      box-shadow: 0 0 20px #ff0000;
+      animation: fadeIn 0.6s ease-out;
+      pointer-events: none; 
+    }
+
+    .demon-counter-container .close-btn,
+    .demon-counter-container .reload-btn {
+      pointer-events: auto;
+      position: absolute;
+      background: transparent;
+      border: none;
+      color: #ff4444;
+      font-size: 18px;
+      cursor: pointer;
+      text-shadow: 0 0 6px #ff0000;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .close-btn { top: 3px; right: 6px; }
+    .reload-btn { top: 3px; left: 6px; }
+
+    .close-btn:hover,
+    .reload-btn:hover {
+      color: #fff;
+      transform: scale(1.2);
+    }
+
+    @keyframes spinReload {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes glowReload {
+      0%, 100% { text-shadow: 0 0 8px #ff0000; }
+      50% { text-shadow: 0 0 20px #ff5555; }
+    }
+    .reload-anim {
+      animation: spinReload 0.8s linear, glowReload 0.8s ease-in-out;
+    }
+
+    .demon-counter-container .label,
+    .demon-counter-container .counter img,
+    .demon-counter-container .footer,
+    .demon-counter-container .online-counter {
+      pointer-events: none;
+    }
+
+    .demon-counter-container .counter img {
+      border: 2px solid #ff0000;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000 inset;
+      background-color: #0f0f0f;
+      display: block;
+      width: 120px;
+      height: auto;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000 inset; }
+      50% { box-shadow: 0 0 25px #ff4444, 0 0 50px #ff4444 inset; }
+      100% { box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000 inset; }
+    }
+
+    .pulse { animation: pulseGlow 2s infinite; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+    .scroll-flags {
+      max-height: 120px; 
+      overflow-y: auto;
+      margin-top: 6px;
+      border-top: 1px solid rgba(255,0,0,0.3);
+      padding-top: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: #ff0000 #0f0f0f;
+      pointer-events: auto; 
+      -webkit-overflow-scrolling: touch;
+      text-align: center;
+    }
+
+    .scroll-flags::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .scroll-flags::-webkit-scrollbar-thumb {
+      background: #ff0000;
+      border-radius: 6px;
+    }
+
+    .scroll-flags::-webkit-scrollbar-track {
+      background: #0f0f0f;
+    }
+
+    #flagScrollContainer {
+      display: inline-block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .demon-counter-container .online-counter {
+      pointer-events: auto;
+    }
+
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div data-iframe="education.html" class="brand">
+      <img src="view_data/logo.png" class="logo" alt="DEMON logo" onerror="this.style.display='none'">
+      <div class="title">DEMON</div>
+    </div>
+
+    <div class="menu" role="navigation" aria-label="Main navigation">
+      <button class="btn" data-iframe="demon.html" id="nav-demon">
+        <img src="view_data/home.svg" class="icon" alt="DEMON">
+        <span class="label">Home</span>
+      </button>
+
+      <button class="btn active" data-iframe="g.html" id="nav">
+        <img src="view_data/g.svg" class="icon" alt="=">
+        <span class="label">Play</span>
+      </button>
+
+      <button class="btn" data-iframe="settings.html" id="nav-settings">
+        <img src="view_data/settings.svg" class="icon" alt="Settings">
+        <span class="label">Settings</span>
+      </button>
+      
+      <button class="btn" data-iframe="chatbot.html" id="nav-chatbot">
+        <img src="view_data/ai.svg" class="icon" alt="ai">
+        <span class="label">Demon bot (ai)</span>
+      </button>
+      
+      <button class="btn" data-iframe="media.html" id="nav-media">
+        <img src="view_data/random.svg" class="icon" alt="media">
+        <span class="label">Random Things</span>
+      </button>
+      
+      <button class="btn" id="nav-ul" aria-haspopup="true" aria-controls="ul-submenu">
+        <img src="view_data/partners.svg" class="icon" alt="Partners">
+        <span class="label">Partners</span>
+      </button>
+      
+      <button class="btn" data-iframe="about.html" id="nav-about">
+        <img src="view_data/about.svg" class="icon" alt="About">
+        <span class="label">About</span>
+      </button>
+      
+      <button class="btn" data-iframe="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__5uznCxUOVROMjU5Nkc1R1NEUlg0UUhQVFRRWlA4Ry4u" id="nav-removal">
+        <img src="view_data/remove.svg" class="icon" alt="">
+        <span class="label">Removal/Complaints</span>
+      </button>
+      
+      <button class="btn" data-iframe="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__5uznCxUNjhOVlBLN0ZLMkFQNFVLUkRUWDFXWFQ1VS4u" id="nav-links">
+        <img src="view_data/forms.svg" class="icon" alt="Recommendations">
+        <span class="label">Recommendations</span>
+      </button>
+      
+      <button class="btn" data-iframe="https://ubghub.org/?site=DEMON" id="nav-ubg">
+        <img src="view_data/ubg.svg" class="icon" alt="UBGhub">
+        <span class="label">Vote on UBGhub</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://discord.gg/PRdAxgzMDg', '_blank')" id="nav-about">
+        <img src="view_data/discord.svg" class="icon" alt="discord">
+        <span class="label">Discord</span>
+      </button>
+    </div>
+  </aside>
+
+  <div id="notifications"></div>
+  <iframe id="contentFrame" src="view_data/g.htm" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>
+
+  <script>
+    const frame = document.getElementById("contentFrame");
+    const menu = document.querySelector(".menu");
+    const sidebar = document.getElementById("sidebar");
+
+
+    const originalMenuHTML = menu.innerHTML;
+
+
+    const ulMenuHTML = `
+      <button class="btn" id="back-btn">
+        <img src="svg/partners.svg" class="icon" alt="Back">
+        <span class="label">Back</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__5uznCxUN0pMMkxGRFJDMkFYQkhHNFJCS0xBRjFLRC4u', '_blank')">
+        <img src="svg/partner.svg" class="icon" alt="Partner?">
+        <span class="label">Partner With us?</span>
+      </button>
+
+      <button class="btn" id="nav-ul-nexora" aria-haspopup="true" aria-controls="ul-submenu">
+        <img src="image/nexora.png" class="icon no-filter">
+        <span class="label">Nexora</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://petezahgames.com/', '_blank')">
+        <img src="image/petezah.png" class="icon no-filter">
+        <span class="label">Petezah games</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://zeronet-17141622.codehs.me/', '_blank')">
+        <img src="image/zero.png" class="icon no-filter">
+        <span class="label">ZΞRO network</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://Boltunblocker.com/', '_blank')">
+        <img src="image/bolt.png" class="icon no-filter">
+        <span class="label">bolt network</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://discord.gg/5RnUdWt3fF', '_blank')">
+        <img src="image/axiom.png" class="icon no-filter">
+        <span class="label">AXIOM</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://t9os.vercel.app/', '_blank')">
+        <img src="image/t9.png" class="icon no-filter">
+        <span class="label">T9 OS</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://discord.gg/v2t8n99fRC', '_blank')">
+        <img src="image/hydra.png" class="icon no-filter">
+        <span class="label">Hydra Network</span>
+      </button>
+      
+      <button class="btn" onclick="window.open('https://learnstuffs-f3dwfhcvaka2cxgx.canadacentral-01.azurewebsites.net', '_blank')">
+        <img src="image/refined.png" class="icon no-filter">
+        <span class="label">Refined Stuff</span>
+      </button>
+    `;
+
+
+    function attachMenuListeners() {
+
+      document.querySelectorAll("[data-iframe]").forEach(btn => {
+
+        btn.onclick = null;
+        btn.addEventListener("click", () => {
+          frame.src = btn.dataset.iframe;
+          document.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+
+
+      const projectULBtn = document.getElementById("nav-ul");
+      if (projectULBtn) {
+        projectULBtn.onclick = (e) => {
+          e.preventDefault();
+          showULMenu();
+        };
+      }
+    }
+
+    function showULMenu() {
+      menu.innerHTML = ulMenuHTML;
+      attachULListeners();
+      sidebar.classList.add("showing-ul");
+    }
+
+    function attachULListeners() {
+      const backBtn = document.getElementById("back-btn");
+      if (backBtn) {
+        backBtn.onclick = () => {
+          menu.innerHTML = originalMenuHTML;
+          attachMenuListeners();
+        };
+      }
+
+      const openBtn = document.getElementById("ul-open");
+      if (openBtn) {
+        openBtn.onclick = () => {
+          window.open('https://projectul-soap64.web.app/', '_blank');
+        };
+      }
+
+      const nexoraBtn = document.getElementById("nav-ul-nexora");
+      if (nexoraBtn) {
+        nexoraBtn.onclick = () => {
+          window.open('https://thenexoraproject.xyz/', '_blank');
+        };
+      }
+    }
+
+    attachMenuListeners();
+  </script>
+
+  
+
+  <script>
+    function closeCounter() {
+      const box = document.getElementById('demonCounterBox');
+      if (!box) return;
+      box.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      box.style.opacity = '0';
+      box.style.transform = 'scale(0.9)';
+      setTimeout(() => box.remove(), 400);
+    }
+
+
+    function animateReload() {
+      const btn = document.getElementById('reloadBtn');
+      if (!btn) return;
+      btn.classList.add('reload-anim');
+      setTimeout(() => btn.classList.remove('reload-anim'), 800);
+    }
+
+
+    function loadOnlineWidget() {
+      const container = document.getElementById('onlineWidget');
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      document.querySelectorAll('script[src*="online_i.js"]').forEach(s => s.remove());
+
+      setTimeout(() => {
+        const script = document.createElement('script');
+        script.src = "//widget.supercounters.com/ssl/online_i.js";
+        script.async = true;
+        script.onload = () => {
+          if (typeof sc_online_i === "function") sc_online_i(1723997,"000000","e61c1c");
+        };
+        container.appendChild(script);
+      }, 150);
+    }
+
+
+    function reloadFlagWidget() {
+      const area = document.getElementById('flagWidgetArea');
+      if (!area) return;
+      const container = document.getElementById('flagScrollContainer');
+      if (!container) return;
+
+
+      container.innerHTML = '';
+
+      setTimeout(() => {
+        const flagScript1 = document.createElement('script');
+        flagScript1.src = "//widget.supercounters.com/ssl/flag.js";
+        flagScript1.type = "text/javascript";
+        flagScript1.async = true;
+
+        const flagScript2 = document.createElement('script');
+        flagScript2.type = "text/javascript";
+        flagScript2.textContent = 'try{ sc_flag(1723990,"450000","bd0000","c20000",1,100,0,1); }catch(e){}';
+
+        container.appendChild(flagScript1);
+        flagScript1.onload = () => {
+          container.appendChild(flagScript2);
+        };
+        setTimeout(() => {
+          if (!document.querySelector('#flagScrollContainer script[src*="flag.js"]')) return;
+          if (typeof sc_flag !== 'function') {
+            try { container.appendChild(flagScript2); } catch(e){}
+          }
+        }, 600);
+      }, 200);
+    }
+    function reloadWidget() {
+      animateReload();
+
+      const box = document.getElementById('demonCounterBox');
+      if (!box) return;
+
+      box.style.transition = 'opacity 0.2s';
+      box.style.opacity = '0.6';
+      setTimeout(() => { box.style.opacity = '1'; }, 200);
+
+      const counterContainer = document.querySelector('.counter');
+      if (counterContainer) {
+        counterContainer.innerHTML = '';
+        const newImg = document.createElement('img');
+        newImg.id = 'demonCounter';
+        newImg.src = "https://counter1.optistats.ovh/private/freecounterstat.php?c=zsf7fbtw5q7pj6cce5sxxfqeu86x4uqt&v=" + Date.now();
+        newImg.border = "0";
+        newImg.title = "views";
+        newImg.alt = "views";
+        newImg.style.pointerEvents = "none";
+        newImg.style.border = "2px solid #ff0000";
+        newImg.style.borderRadius = "8px";
+        newImg.style.boxShadow = "0 0 15px #ff0000, 0 0 30px #ff0000 inset";
+        newImg.style.backgroundColor = "#0f0f0f";
+        newImg.style.display = "block";
+        newImg.style.width = "120px";
+        newImg.style.height = "auto";
+        newImg.style.maxWidth = "100%";
+        newImg.style.boxSizing = "border-box";
+        counterContainer.appendChild(newImg);
+      }
+      loadOnlineWidget();
+      reloadFlagWidget();
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      loadOnlineWidget();
+    });
+  </script>
+
+
+
+</body></html>
